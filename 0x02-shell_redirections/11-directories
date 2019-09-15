@@ -1,2 +1,2 @@
 #!/bin/bash
-find ./	* -type d -ls |wc -1
+ls -laR | find -type d ! -iname "." |wc -l
