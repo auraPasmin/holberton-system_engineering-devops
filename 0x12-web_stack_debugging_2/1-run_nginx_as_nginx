@@ -1,1 +1,7 @@
 #!/usr/bin/env bash
+# Run Nginx as nginx must be running as nginx user
+
+sudo pkill apache2
+sudo chmod ugo+rw /etc/nginx/nginx.conf
+sed -i -E 's/(listen.*)80 /\18080 /g' /etc/nginx/sites-enabled/default
+sudo -u nginx 
