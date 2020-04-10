@@ -1,1 +1,8 @@
-#!/usr/bin/env bash
+apt-get update
+apt-get install ufw
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow ssh
+ufw enable
+ufw allow http
+ufw allow https
