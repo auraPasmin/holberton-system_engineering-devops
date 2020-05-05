@@ -1,31 +1,18 @@
 #!/usr/bin/python3
-"""Write a Python script that, using this REST API
-for a given employee ID
+""" Module gather data from an API
 """
-
 import requests
-import sys
+from sys import argv as av
 
-if __name__ == "__main__":
 
-    userId = sys.argv[1]
-    api = 'https://jsonplaceholder.typicode.com'
-    user = requests.get(api+'/users/'+userId)
+if __name__ == '__main__':
+    # Of api
+    url = 'https://jsonplaceholder.typicode.com/'
+    user = requests.get(url + 'users/{}'.format(av[1])).json()
+    todo = requests.get(url + 'users/{}/todos'.format(av[1])).json()
+    tasks = [task.get('title') for task in todo if task.get('completed')]
+    first = 'Employee {} is done with '.format(user['name'])
+    first += 'tasks({}/{}):'.format(len(tasks), len(todo))
 
-    name = user.json().get('name')
-
-    all = requests.get(api+'/all')
-    allTasks = 0
-    completed = 0
-
-    for task in all.json():
-        if task.get('userId') == int(userId):
-            allTasks += 1
-            if task.get('completed'):
-                completed += 1
-
-    print('Employee {} is done with tasks({}/{}):'
-          .format(name, completed, allTasks))
-
-    print('\n'.join(["\t " + task.get('title') for task in all.json()
-          if task.get('userId') == int(userId) and task.get('completed')]))
+    print(first)
+    [print('\t {}'.format(task)) for task in tasks]
